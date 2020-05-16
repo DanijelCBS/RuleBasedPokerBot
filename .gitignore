@@ -31,3 +31,4 @@ opentestbed/bin/META-INF/kmodule.xml
 opentestbed/bin/META-INF/maven/pom.properties
 opentestbed/bin/rules/pre-flop-rules.drl
 opentestbed/.idea/workspace.xml
+*.xml
