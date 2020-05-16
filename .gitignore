@@ -21,3 +21,12 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+opentestbed/.idea/workspace.xml
+opentestbed/bin/logback-test.xml
+opentestbed/bin/main/resources/logback-test.xml
+opentestbed/bin/main/resources/META-INF/kmodule.xml
+opentestbed/bin/main/resources/META-INF/maven/pom.properties
+opentestbed/bin/main/resources/rules/pre-flop-rules.drl
+opentestbed/bin/META-INF/kmodule.xml
+opentestbed/bin/META-INF/maven/pom.properties
+opentestbed/bin/rules/pre-flop-rules.drl
