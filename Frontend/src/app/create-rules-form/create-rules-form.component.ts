@@ -10,6 +10,8 @@ import {RulesService} from '../rules-service.service';
 })
 export class CreateRulesFormComponent implements OnInit {
   public form: FormGroup;
+  public preFlopErrors = 'No errors';
+  public postFlopErrors = 'No errors';
 
   constructor(private rulesService: RulesService, private formBuilder: FormBuilder) {
 
@@ -33,13 +35,17 @@ export class CreateRulesFormComponent implements OnInit {
     const rulesDTO: RulesDTO = this.form.controls.rules.value;
     this.rulesService.createRules(rulesDTO).subscribe({
       next: (message: string) => {
-        console.log("pozdrav");
         console.log(message);
       },
-      error: (message: string) => {
-        console.log("ozdrav");
-        console.log(message);
+      error: (object: object) => {
+        this.handleError(object);
       },
     });
+  }
+
+  private handleError(object) {
+    const errors = object.error.split('POST-FLOP');
+    this.preFlopErrors = errors[0].substring(9);
+    this.postFlopErrors = errors[1];
   }
 }

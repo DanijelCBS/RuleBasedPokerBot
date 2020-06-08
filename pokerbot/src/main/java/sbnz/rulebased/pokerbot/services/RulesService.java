@@ -11,6 +11,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 import sbnz.rulebased.pokerbot.dto.RulesDTO;
+import sbnz.rulebased.pokerbot.exceptions.DroolsErrorsException;
 import sbnz.rulebased.pokerbot.exceptions.WrongRuleNameException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -26,16 +27,15 @@ import java.util.regex.Pattern;
 @Service
 public class RulesService {
 
-    public String createRules(RulesDTO rules) throws WrongRuleNameException, IOException, ParserConfigurationException, TransformerException, SAXException {
+    public String createRules(RulesDTO rules) throws WrongRuleNameException, IOException, ParserConfigurationException, TransformerException, SAXException, DroolsErrorsException {
         VerifierBuilder vBuilder = VerifierBuilderFactory.newVerifierBuilder();
         Verifier verifier = vBuilder.newVerifier();
         StringBuilder stringBuilder = new StringBuilder();
 
-        verifyRules(stringBuilder, rules.getPreFlopRules(), "PRE-FLOP", verifier);
-        verifyRules(stringBuilder, rules.getPostFlopRules(), "POST-FLOP", verifier);
-
-        if (stringBuilder.length() != 0)
-            return stringBuilder.toString();
+        if (verifyRules(stringBuilder, rules.getPreFlopRules(), "PRE-FLOP", verifier)
+                || verifyRules(stringBuilder, rules.getPostFlopRules(), "POST-FLOP", verifier)) {
+            throw new DroolsErrorsException(stringBuilder.toString());
+        }
 
         String preFlopDRL = processPreFlopRules(rules.getAlias(), rules.getPreFlopRules());
         String postFlopDRL = processPostFlopRules(rules.getAlias(), rules.getPostFlopRules());
@@ -56,15 +56,20 @@ public class RulesService {
         return "Successfully created rules";
     }
 
-    private void verifyRules(StringBuilder stringBuilder, String rules, String phase, Verifier verifier) {
+    private boolean verifyRules(StringBuilder stringBuilder, String rules, String phase, Verifier verifier) {
         verifier.addResourcesToVerify(new ReaderResource(new StringReader(rules)), ResourceType.DRL);
+        stringBuilder.append(phase).append("\n");
         if (verifier.getErrors().size() != 0)
         {
-            stringBuilder.append(phase).append("\n");
             for (int i = 0; i < verifier.getErrors().size(); i++)
             {
-                stringBuilder.append(verifier.getErrors().get(i).getMessage()).append("\n");
+                stringBuilder.append(verifier.getErrors().get(i).getMessage()).append("\n\n");
             }
+            return true;
+        }
+        else {
+            stringBuilder.append("No errors");
+            return false;
         }
     }
 

@@ -22,12 +22,12 @@
     </mat-form-field>
 
     <mat-form-field>
-        <textarea matInput type="text" placeholder="Pre-flop rules"
+        <textarea [value]="preFlopErrors" matInput type="text" placeholder="Pre-flop rules"
                    cdkTextareaAutosize cdkAutosizeMinRows="13" [readonly]="true"></textarea>
     </mat-form-field>
 
     <mat-form-field>
-        <textarea matInput type="text" placeholder="Post-flop rules"
+        <textarea [value]="postFlopErrors" matInput type="text" placeholder="Post-flop rules"
                    cdkTextareaAutosize cdkAutosizeMinRows="13" [readonly]="true"></textarea>
     </mat-form-field>
   </div>
