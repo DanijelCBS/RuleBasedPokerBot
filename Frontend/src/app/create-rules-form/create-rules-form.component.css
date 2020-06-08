@@ -1,0 +1,9 @@
+#main-form {
+  width: 600px;
+  margin-left: 30px;
+}
+
+#error-form {
+  color: red;
+  width: 400px !important;
+}

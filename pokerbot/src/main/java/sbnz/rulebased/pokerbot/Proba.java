@@ -52,7 +52,7 @@ public class Proba {
                 "        }\n" +
                 "end";
 
-        RulesDTO rulesDTO = new RulesDTO("proba", preFlop, postFlop);
-        System.out.println(rulesService.createRules(rulesDTO));
+        // RulesDTO rulesDTO = new RulesDTO("proba", preFlop, postFlop);
+        // System.out.println(rulesService.createRules(rulesDTO));
     }
 }
