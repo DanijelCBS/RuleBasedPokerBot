@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatSnackBar} from '@angular/material';
+import {Router} from '@angular/router';
 import {RulesDTO} from '../model/rules-dto-model';
 import {RulesService} from '../rules-service.service';
 
@@ -12,8 +14,53 @@ export class CreateRulesFormComponent implements OnInit {
   public form: FormGroup;
   public preFlopErrors = 'No errors';
   public postFlopErrors = 'No errors';
+  private preFlopShell = 'rule "pre-flop"\n\n' +
+    '    when\n\n' +
+    '    then\n\n' +
+    'end';
+  private postFlopShell = 'rule "post-flop"\n\n' +
+    '    when\n\n' +
+    '    then\n\n' +
+    'end';
+  public preFlopTooltip = 'IMPORTS\n\n import com.biotools.meerkat.Card;\n' +
+    'import com.biotools.meerkat.Action;\n' +
+    'import com.biotools.meerkat.GameInfo;\n' +
+    'import bots.rulebasedbot.Utility;\n' +
+    'import bots.rulebasedbot.PlayStyle;\n' +
+    'import bots.rulebasedbot.Strategy;\n' +
+    'import com.biotools.meerkat.Holdem;\n' +
+    '\n' +
+    'GLOBALS\n\n global Integer make1Threshold;\n' +
+    'global Integer make2Threshold;\n' +
+    'global Integer make4Threshold;\n' +
+    'global Integer call1Threshold;\n' +
+    'global Integer call2Threshold;\n' +
+    'global Integer numOfPlayersToAct;\n' +
+    'global GameInfo gameInfo;\n' +
+    'FACTS - PlayerState;\n';
 
-  constructor(private rulesService: RulesService, private formBuilder: FormBuilder) {
+  public postFlopTooltip = 'IMPORTS\n\n import com.biotools.meerkat.Card;\n' +
+    'import com.biotools.meerkat.Action;\n' +
+    'import com.biotools.meerkat.GameInfo;\n' +
+    'import bots.rulebasedbot.Utility;\n' +
+    'import bots.rulebasedbot.PlayStyle;\n' +
+    'import bots.rulebasedbot.Strategy;\n' +
+    'import com.biotools.meerkat.Holdem;\n' +
+    'import bots.rulebasedbot.BettingEvent;\n' +
+    'import bots.rulebasedbot.HandStrengthEnum;\n' +
+    '\n' +
+    'GLOBALS\n\n global Double make1PostFlopThreshold;\n' +
+    'global Double make2PostFlopThreshold;\n' +
+    'global Double potOdds;\n' +
+    'global Double potOdds2;\n' +
+    'global Boolean semiBluffingFlag;\n' +
+    'global Double showdownCost;\n' +
+    'global Double showdownOdds;\n' +
+    'global GameInfo gameInfo;\n' +
+    'FACTS - PlayerState;\n';
+
+  constructor(private rulesService: RulesService, private formBuilder: FormBuilder, private snackBar: MatSnackBar,
+              private router: Router) {
 
   }
 
@@ -24,18 +71,25 @@ export class CreateRulesFormComponent implements OnInit {
   private initializeForm(): void {
     this.form = this.formBuilder.group({
       rules: this.formBuilder.group({
-        alias: [''],
-        preFlopRules: [''],
-        postFlopRules: [''],
+        alias: ['', [Validators.required, Validators.pattern('^[A-Z].*$')]],
+        preFlopRules: [this.preFlopShell, [Validators.required]],
+        postFlopRules: [this.postFlopShell, [Validators.required]],
       }),
     });
   }
 
   public createRules() {
     const rulesDTO: RulesDTO = this.form.controls.rules.value;
+    if (rulesDTO.alias === 'rules') {
+      this.snackBar.open('Rules alias can not be "rules"');
+      return;
+    }
     this.rulesService.createRules(rulesDTO).subscribe({
       next: (message: string) => {
-        console.log(message);
+        this.ngOnInit();
+        this.snackBar.open(message, 'Dismiss', {
+          duration: 3000,
+        });
       },
       error: (object: object) => {
         this.handleError(object);
@@ -44,8 +98,14 @@ export class CreateRulesFormComponent implements OnInit {
   }
 
   private handleError(object) {
-    const errors = object.error.split('POST-FLOP');
-    this.preFlopErrors = errors[0].substring(9);
-    this.postFlopErrors = errors[1];
+    try {
+      const errors = object.error.split('POST-FLOP');
+      this.preFlopErrors = errors[0].substring(9);
+      this.postFlopErrors = errors[1];
+    } catch {
+      this.snackBar.open(object.error, 'Dismiss', {
+        duration: 3000,
+      });
+    }
   }
 }

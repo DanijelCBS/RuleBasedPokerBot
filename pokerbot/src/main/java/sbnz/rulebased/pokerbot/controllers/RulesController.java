@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sbnz.rulebased.pokerbot.dto.RulesDTO;
 import sbnz.rulebased.pokerbot.services.RulesService;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/rules")
@@ -16,7 +17,7 @@ public class RulesController {
     RulesService rulesService;
 
     @PostMapping
-    public ResponseEntity<Object> createRules(@RequestBody RulesDTO rules) {
+    public ResponseEntity<Object> createRules(@Valid @RequestBody RulesDTO rules) {
         try {
             return new ResponseEntity<>(rulesService.createRules(rules), HttpStatus.OK);
         } catch (Exception e) {

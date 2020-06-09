@@ -1,39 +1,46 @@
-<div id='main' fxLayout="row" fxLayoutGap="10%">
+<app-toolbar></app-toolbar>
+<div id='main' fxLayout="row" fxLayoutGap="10%" style="margin-top:10px;">
   <form id='main-form' [formGroup]="form" fxLayout="column" fxLayoutGap="8%">
     <div formGroupName="rules" fxLayout="column">
       <mat-form-field>
         <input matInput type="text" placeholder="Rules alias" formControlName="alias">
       </mat-form-field>
+      <sup>*Rules alias can not be 'rules'</sup>
 
-      <mat-form-field>
+      <mat-chip-list style="margin-top:20px">
+        <mat-chip matTooltip={{preFlopTooltip}}>Imports and globals</mat-chip>
+      </mat-chip-list>
+      <mat-form-field style="margin-top:20px">
         <textarea matInput type="text" placeholder="Pre-flop rules"
                   formControlName="preFlopRules" cdkTextareaAutosize cdkAutosizeMinRows="13"></textarea>
       </mat-form-field>
+      <sup>*Pre-flop rules names must end with 'pre-flop'</sup>
 
-      <mat-form-field>
-        <textarea matInput type="text" placeholder="Post-flop rules" class="rulesField" matInput type="text" placeholder="Post-flop rules"
+      <mat-chip-list style="margin-top:20px">
+        <mat-chip matTooltip={{postFlopTooltip}}>Imports and globals</mat-chip>
+      </mat-chip-list>
+      <mat-form-field style="margin-top:20px">
+        <textarea matInput type="text" placeholder="Post-flop rules" class="rulesField"
                   formControlName="postFlopRules" cdkTextareaAutosize cdkAutosizeMinRows="13"></textarea>
       </mat-form-field>
+      <sup>*Post-flop rules names must end with 'post-flop'</sup>
+
     </div>
   </form>
   <div id='error-form' fxLayout="column">
-    <mat-form-field>
-      <input matInput type="text" placeholder="Rules alias" [readonly]="true">
-    </mat-form-field>
-
     <mat-form-field>
         <textarea [value]="preFlopErrors" matInput type="text" placeholder="Pre-flop rules"
                    cdkTextareaAutosize cdkAutosizeMinRows="13" [readonly]="true"></textarea>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field style="margin-top:85px">
         <textarea [value]="postFlopErrors" matInput type="text" placeholder="Post-flop rules"
                    cdkTextareaAutosize cdkAutosizeMinRows="13" [readonly]="true"></textarea>
     </mat-form-field>
   </div>
 </div>
 <div fxLayout="row" fxLayoutAlign="center" style="margin-top:50px;">
-  <button mat-raised-button color="primary" (click)="createRules()">Create rules</button>
+  <button mat-raised-button color="primary" (click)="createRules()" [disabled]='(!form.valid)'>Create rules</button>
 </div>
 
 

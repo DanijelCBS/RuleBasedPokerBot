@@ -6,4 +6,5 @@
 #error-form {
   color: red;
   width: 400px !important;
+  margin-top: 150px !important;
 }

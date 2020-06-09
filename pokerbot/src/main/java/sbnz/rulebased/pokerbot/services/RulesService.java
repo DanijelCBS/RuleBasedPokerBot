@@ -28,6 +28,9 @@ import java.util.regex.Pattern;
 public class RulesService {
 
     public String createRules(RulesDTO rules) throws WrongRuleNameException, IOException, ParserConfigurationException, TransformerException, SAXException, DroolsErrorsException {
+        if (rules.getAlias().equals("rules"))
+            throw new WrongRuleNameException("Rules alias can not be 'rules'");
+
         VerifierBuilder vBuilder = VerifierBuilderFactory.newVerifierBuilder();
         Verifier verifier = vBuilder.newVerifier();
         StringBuilder stringBuilder = new StringBuilder();
