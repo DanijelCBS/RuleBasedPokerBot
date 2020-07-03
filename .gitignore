@@ -33,3 +33,5 @@ opentestbed/bin/rules/pre-flop-rules.drl
 opentestbed/.idea/workspace.xml
 *.xml
 opentestbed/data/**
+opentestbed/bin/main/resources/rules/post-flop-rules.drl
+opentestbed/bin/rules/post-flop-rules.drl
