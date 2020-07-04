@@ -29,15 +29,11 @@ export class CreateRulesFormComponent implements OnInit {
     'import bots.rulebasedbot.PlayStyle;\n' +
     'import bots.rulebasedbot.Strategy;\n' +
     'import com.biotools.meerkat.Holdem;\n' +
-    '\n' +
-    'GLOBALS\n\n global Integer make1Threshold;\n' +
-    'global Integer make2Threshold;\n' +
-    'global Integer make4Threshold;\n' +
-    'global Integer call1Threshold;\n' +
-    'global Integer call2Threshold;\n' +
+    '\n\n' +
+    'GLOBALS\n\n global Integer phase;\n' +
     'global Integer numOfPlayersToAct;\n' +
     'global GameInfo gameInfo;\n' +
-    'FACTS - PlayerState;\n';
+    'FACTS - PlayerState;\n Thresholds';
 
   public postFlopTooltip = 'IMPORTS\n\n import com.biotools.meerkat.Card;\n' +
     'import com.biotools.meerkat.Action;\n' +
@@ -51,13 +47,9 @@ export class CreateRulesFormComponent implements OnInit {
     '\n' +
     'GLOBALS\n\n global Double make1PostFlopThreshold;\n' +
     'global Double make2PostFlopThreshold;\n' +
-    'global Double potOdds;\n' +
-    'global Double potOdds2;\n' +
-    'global Boolean semiBluffingFlag;\n' +
-    'global Double showdownCost;\n' +
-    'global Double showdownOdds;\n' +
+    'global Integer phase;\n' +
     'global GameInfo gameInfo;\n' +
-    'FACTS - PlayerState;\n';
+    'FACTS - PlayerState;\n PostFlopParameters';
 
   constructor(private rulesService: RulesService, private formBuilder: FormBuilder, private snackBar: MatSnackBar,
               private router: Router) {
