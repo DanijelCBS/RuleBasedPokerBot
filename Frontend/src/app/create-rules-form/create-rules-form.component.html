@@ -11,19 +11,17 @@
         <mat-chip matTooltip={{preFlopTooltip}}>Imports and globals</mat-chip>
       </mat-chip-list>
       <mat-form-field style="margin-top:20px">
-        <textarea matInput type="text" placeholder="Pre-flop rules"
+        <textarea matInput type="text" placeholder="Pre-flop rules" (keydown)="checkTabEvent($event)"
                   formControlName="preFlopRules" cdkTextareaAutosize cdkAutosizeMinRows="13"></textarea>
       </mat-form-field>
-      <sup>*Pre-flop rules names must end with 'pre-flop'</sup>
 
       <mat-chip-list style="margin-top:20px">
         <mat-chip matTooltip={{postFlopTooltip}}>Imports and globals</mat-chip>
       </mat-chip-list>
       <mat-form-field style="margin-top:20px">
-        <textarea matInput type="text" placeholder="Post-flop rules" class="rulesField"
+        <textarea matInput type="text" placeholder="Post-flop rules" class="rulesField" (keydown)="checkTabEvent($event)"
                   formControlName="postFlopRules" cdkTextareaAutosize cdkAutosizeMinRows="13"></textarea>
       </mat-form-field>
-      <sup>*Post-flop rules names must end with 'post-flop'</sup>
 
     </div>
   </form>

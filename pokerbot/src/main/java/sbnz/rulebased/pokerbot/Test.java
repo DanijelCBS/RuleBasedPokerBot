@@ -19,7 +19,7 @@ public class Test {
     @Autowired
     RulesService rulesService;
 
-    @PostConstruct
+    /*@PostConstruct
     public void test() throws IOException, WrongRuleNameException, ParserConfigurationException, TransformerException, SAXException, DroolsErrorsException {
         String preFlop = "rule \"Determine suits pre-flop\"\n" +
                 "\twhen\n" +
@@ -53,5 +53,5 @@ public class Test {
 
         RulesDTO rulesDTO = new RulesDTO("test", preFlop, postFlop);
         System.out.println(rulesService.createRules(rulesDTO));
-    }
+    }*/
 }

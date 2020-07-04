@@ -114,6 +114,7 @@ public class RulesService {
                 "import bots.rulebasedbot.PlayStyle;\n" +
                 "import bots.rulebasedbot.Strategy;\n" +
                 "import com.biotools.meerkat.Holdem;\n" +
+                "import bots.rulebasedbot.Thresholds;\n" +
                 "\n" +
                 "global Integer numOfPlayersToAct;\n" +
                 "global Integer phase;\n" +
@@ -132,6 +133,7 @@ public class RulesService {
                 "import com.biotools.meerkat.Holdem;\n" +
                 "import bots.rulebasedbot.BettingEvent;\n" +
                 "import bots.rulebasedbot.HandStrengthEnum;\n" +
+                "import bots.rulebasedbot.PostFlopParameters;\n" +
                 "\n" +
                 "global Double make1PostFlopThreshold;\n" +
                 "global Double make2PostFlopThreshold;\n" +

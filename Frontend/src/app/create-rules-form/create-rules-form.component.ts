@@ -14,11 +14,11 @@ export class CreateRulesFormComponent implements OnInit {
   public form: FormGroup;
   public preFlopErrors = 'No errors';
   public postFlopErrors = 'No errors';
-  private preFlopShell = 'rule "pre-flop"\n\n' +
+  private preFlopShell = 'rule "rule1"\n\n' +
     '    when\n\n' +
     '    then\n\n' +
     'end';
-  private postFlopShell = 'rule "post-flop"\n\n' +
+  private postFlopShell = 'rule "rule1"\n\n' +
     '    when\n\n' +
     '    then\n\n' +
     'end';
@@ -27,8 +27,10 @@ export class CreateRulesFormComponent implements OnInit {
     'import com.biotools.meerkat.GameInfo;\n' +
     'import bots.rulebasedbot.Utility;\n' +
     'import bots.rulebasedbot.PlayStyle;\n' +
+    'import bots.rulebasedbot.PlayerState;\n' +
     'import bots.rulebasedbot.Strategy;\n' +
     'import com.biotools.meerkat.Holdem;\n' +
+    'import bots.rulebasedbot.Thresholds;\n' +
     '\n\n' +
     'GLOBALS\n\n global Integer phase;\n' +
     'global Integer numOfPlayersToAct;\n' +
@@ -40,11 +42,13 @@ export class CreateRulesFormComponent implements OnInit {
     'import com.biotools.meerkat.GameInfo;\n' +
     'import bots.rulebasedbot.Utility;\n' +
     'import bots.rulebasedbot.PlayStyle;\n' +
+    'import bots.rulebasedbot.PlayerState;\n' +
     'import bots.rulebasedbot.Strategy;\n' +
     'import com.biotools.meerkat.Holdem;\n' +
     'import bots.rulebasedbot.BettingEvent;\n' +
     'import bots.rulebasedbot.HandStrengthEnum;\n' +
-    '\n' +
+    'import bots.rulebasedbot.PostFlopParameters;\n' +
+    '\n\n' +
     'GLOBALS\n\n global Double make1PostFlopThreshold;\n' +
     'global Double make2PostFlopThreshold;\n' +
     'global Integer phase;\n' +
@@ -98,6 +102,16 @@ export class CreateRulesFormComponent implements OnInit {
       this.snackBar.open(object.error, 'Dismiss', {
         duration: 3000,
       });
+    }
+  }
+
+  public checkTabEvent(event) {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      const start = event.target.selectionStart;
+      const end = event.target.selectionEnd;
+      event.target.value = event.target.value.substring(0, start) + '\t' + event.target.value.substring(end);
+      event.target.selectionStart = event.target.selectionEnd = start + 1;
     }
   }
 }
