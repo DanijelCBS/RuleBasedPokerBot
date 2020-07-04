@@ -75,64 +75,32 @@ public class RulesService {
         }
     }
 
-    private String processPreFlopRules(String alias, String preFlopRules) throws WrongRuleNameException {
+    private String processPreFlopRules(String alias, String preFlopRules) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("package ").append(alias).append("\n").append("\n");
 
+        String salience = "salience 100*phase";
         stringBuilder.append(getPreFlopImportsAndGlobals());
-        Pattern rulePattern = Pattern.compile("rule \"[a-zA-Z0-9 +.;:-]*\"");
+        Pattern rulePattern = Pattern.compile("when");
         Matcher m = rulePattern.matcher(preFlopRules);
-        boolean found = false;
-        String rule;
-        while (m.find()) {
-            found = true;
-            rule = m.group(0);
-            if (rule.length() < 8 || !rule.contains("-"))
-                throw new WrongRuleNameException("Rule name must contains 'pre-flop'");
-            String[] tokens = rule.split("-");
-            String pre = tokens[tokens.length - 2];
-            pre = pre.substring(pre.length() - 3);
-            String flop = tokens[tokens.length - 1];
-            flop = flop.substring(0, flop.length() - 1);
-            if (!pre.equals("pre") || !flop.equals("flop"))
-                throw new WrongRuleNameException("Rule name must end with 'pre-flop'");
-        }
+        String newPreFlopRules = m.replaceAll(salience + "\n\twhen");
 
-        if (!found)
-            throw new WrongRuleNameException("Unsupported characters in rule name");
-
-        stringBuilder.append(preFlopRules);
+        stringBuilder.append(newPreFlopRules);
 
         return stringBuilder.toString();
     }
 
-    private String processPostFlopRules(String alias, String postFlopRules) throws WrongRuleNameException {
+    private String processPostFlopRules(String alias, String postFlopRules) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("package ").append(alias).append("\n");
 
+        String salience = "salience -100*phase";
         stringBuilder.append(getPostFlopImportsAndGlobals());
-        Pattern rulePattern = Pattern.compile("rule \"[a-zA-Z0-9 +.;:-]*\"");
+        Pattern rulePattern = Pattern.compile("when");
         Matcher m = rulePattern.matcher(postFlopRules);
-        String rule;
-        boolean found = false;
-        while (m.find()) {
-            found = true;
-            rule = m.group(0);
-            if (rule.length() < 9 || !rule.contains("-"))
-                throw new WrongRuleNameException("Rule name must contains 'post-flop'");
-            String[] tokens = rule.split("-");
-            String post = tokens[tokens.length - 2];
-            post = post.substring(post.length() - 4);
-            String flop = tokens[tokens.length - 1];
-            flop = flop.substring(0, flop.length() - 1);
-            if (!post.equals("post") || !flop.equals("flop"))
-                throw new WrongRuleNameException("Rule name must end with 'post-flop'");
-        }
+        String newPostFlopRules = m.replaceAll(salience + "\n\twhen");
 
-        if (!found)
-            throw new WrongRuleNameException("Unsupported characters in rule name");
-
-        stringBuilder.append(postFlopRules);
+        stringBuilder.append(newPostFlopRules);
 
         return stringBuilder.toString();
     }
@@ -153,6 +121,7 @@ public class RulesService {
                 "global Integer call1Threshold;\n" +
                 "global Integer call2Threshold;\n" +
                 "global Integer numOfPlayersToAct;\n" +
+                "global Integer phase;\n" +
                 "global GameInfo gameInfo;\n\n";
 
     }
@@ -176,6 +145,7 @@ public class RulesService {
                 "global Boolean semiBluffingFlag;\n" +
                 "global Double showdownCost;\n" +
                 "global Double showdownOdds;\n" +
+                "global Integer phase;\n" +
                 "global GameInfo gameInfo;\n\n";
     }
 
